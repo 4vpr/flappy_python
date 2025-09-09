@@ -59,7 +59,7 @@ class Bird:
         screen.blit(r_img, (self.x, self.y))
 
     def bird_sound(self):
-        print(f"{self.name} : {self.bird_sound}")
+        print(f"{self.name} : {self.sound}")
         self.yspeed = -7
         self.is_flying = False
 
