@@ -16,7 +16,7 @@ class Status:
 
 
 class Bird:
-    def __init__(self, name: str, surface: pygame.Surface, img_path: str = "", sound: str = "owo"):
+    def __init__(self, name: str, surface: pygame.Surface, img_path: str = "", sound: str = "owo",mass=5,speed=3):
         self.x = 120
         self.y = screen_height / 2
         self.sound = sound
@@ -31,6 +31,8 @@ class Bird:
         self.fly_duration = 0.5
         self.flying_time = 0
         self.fly_cooling = 0
+        self.mass = mass
+        self.speed = speed
         try:
             p = os.path.join("assets", img_path) if img_path else None
             if p and os.path.exists(p):
@@ -48,7 +50,7 @@ class Bird:
             if self.flying_time < 0:
                 self.is_flying = False
         else:
-            self.yspeed += self.g * dt
+            self.yspeed += self.g * dt * self.mass / 5
             self.fly_cooling += dt
         self.rotate = max(-30, min(30, self.yspeed * -2))
         self.y += self.yspeed
@@ -60,9 +62,10 @@ class Bird:
 
     def bird_sound(self):
         print(f"{self.name} : {self.sound}")
-        self.yspeed = -7
+        self.yspeed = -5 * (1 + self.speed / 4)
         self.is_flying = False
-
+    def bird_running(self):
+        print(f"달린다 {self.mass} * {self.speed}")
     def fly(self):
         print(f"{self.name} : 날고있습니다")
         if self.fly_cooldown < self.fly_cooling:
@@ -125,11 +128,11 @@ class Game:
 
     def make_birds(self):
         return [
-            Bird('Parrot', self.screen, "parrot.png","안녕하세요"),
-            Bird('Sparrow', self.screen, "sparrow.png","짹짹"),
-            Bird('Pigeon', self.screen, "pigeon.png","푸드득푸드득"),
-            Bird('Chicken', self.screen, "chicken.png","꽉끼오"),
-            Bird('RubberDuck', self.screen, "rubberduck.png","꽉"),
+            Bird('Parrot', self.screen, "parrot.png","안녕하세요",5,3),
+            Bird('Sparrow', self.screen, "sparrow.png","짹짹",5,2),
+            Bird('Pigeon', self.screen, "pigeon.png","푸드득푸드득",5,4),
+            Bird('Chicken', self.screen, "chicken.png","꽉끼오",5,1),
+            Bird('RubberDuck', self.screen, "rubberduck.png","꽉",5,0),
         ]
 
     def reset(self):
