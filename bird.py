@@ -65,7 +65,7 @@ class Bird:
         self.yspeed = -5 * (1 + self.speed / 4)
         self.is_flying = False
     def bird_running(self):
-        print(f"달린다 {self.mass} * {self.speed}")
+        print(f"달린다 {self.mass * self.speed}")
     def fly(self):
         print(f"{self.name} : 날고있습니다")
         if self.fly_cooldown < self.fly_cooling:
