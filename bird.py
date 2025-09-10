@@ -70,12 +70,12 @@ class Bird:
         self.is_flying = False
     def bird_running(self):
         if self.speed > 0:
-            print(f"달린다 {self.mass * self.speed}")
+            print(f"속도 : {self.mass * self.speed}")
         else:
             print("달릴 수 없다")
     def fly(self):
-        print(f"{self.name} : 날고있습니다")
         if self.speed > 0:
+            print(f"{self.name} : 날고있습니다")
             if self.fly_cooldown < self.fly_cooling:
                 self.yspeed = 0.5
                 self.flying_time = self.fly_duration
