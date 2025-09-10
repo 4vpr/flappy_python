@@ -194,7 +194,7 @@ class Game:
                         self.status = Status.Game
                         self.reset()
                 elif self.status == Status.Game:
-                    if event.key in (pygame.K_SPACE):
+                    if event.key == pygame.K_SPACE:
                         self.bird.bird_running()
                 elif self.status == Status.Over:
                     if event.key in (pygame.K_RETURN, pygame.K_SPACE):
