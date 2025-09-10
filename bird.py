@@ -62,7 +62,9 @@ class Bird:
 
     def bird_sound(self):
         print(f"{self.name} : {self.sound}")
-        self.yspeed = -5 * (1 + self.speed / 4)
+        if self.yspeed > 0:
+            self.yspeed = 0
+        self.yspeed -= 5 * (1 + self.speed / 8)
         self.is_flying = False
     def bird_running(self):
         print(f"달린다 {self.mass * self.speed}")
