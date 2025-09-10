@@ -15,9 +15,8 @@ class Status:
     Game = 1
     Over = 2
 
-
 class Bird:
-    def __init__(self, name: str, surface: pygame.Surface, img_path: str = "", sound: str = "owo",mass=5,speed=3):
+    def __init__(self, name: str, surface: pygame.Surface, img_path: str = "", sound: str = "owo",mass=5,speed=3,has_item=False,has_item_effect=True):
         self.x = 120
         self.y = screen_height / 2
         self.sound = sound
@@ -34,6 +33,8 @@ class Bird:
         self.fly_cooling = 0
         self.mass = mass
         self.speed = speed
+        self.has_item = has_item
+        self.has_item_effect = has_item_effect
         # self.is_actable = speed > 0 이 방법도 있음
         try:
             p = os.path.join("assets", img_path) if img_path else None
@@ -70,7 +71,9 @@ class Bird:
         self.is_flying = False
     def bird_running(self):
         if self.speed > 0:
-            print(f"속도 : {self.mass * self.speed}")
+            print(f"속도 : {self.mass * self.speed * (1 + int(self.has_item and self.has_item_effect) * 1)}")
+            if self.has_item:
+                print("아이템으로 속도가 빨라졌다.")
         else:
             print("달릴 수 없다")
     def fly(self):
@@ -138,11 +141,11 @@ class Game:
 
     def make_birds(self):
         return [
-            Bird('Parrot', self.screen, "parrot.png","안녕하세요",5,3),
-            Bird('Sparrow', self.screen, "sparrow.png","짹짹",5,2),
-            Bird('Pigeon', self.screen, "pigeon.png","푸드득푸드득",5,4),
-            Bird('Chicken', self.screen, "chicken.png","꽉끼오",5,1),
-            Bird('RubberDuck', self.screen, "rubberduck.png","꽉",5,0),
+            Bird('Parrot', self.screen, "parrot.png","안녕하세요",5,3,has_item=True),
+            Bird('Sparrow', self.screen, "sparrow.png","짹짹",5,2,has_item=True),
+            Bird('Pigeon', self.screen, "pigeon.png","푸드득푸드득",5,4,has_item=True),
+            Bird('Chicken', self.screen, "chicken.png","꽉끼오",5,1,has_item_effect=False),
+            Bird('RubberDuck', self.screen, "rubberduck.png","꽉",5,0,has_item_effect=False),
         ]
 
     def reset(self):
@@ -190,6 +193,9 @@ class Game:
                     elif event.key in (pygame.K_RETURN, pygame.K_SPACE):
                         self.status = Status.Game
                         self.reset()
+                elif self.status == Status.Game:
+                    if event.key in (pygame.K_SPACE):
+                        self.bird.bird_running()
                 elif self.status == Status.Over:
                     if event.key in (pygame.K_RETURN, pygame.K_SPACE):
                         self.status = Status.Game
