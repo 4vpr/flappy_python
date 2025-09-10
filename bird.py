@@ -9,6 +9,7 @@ screen_width = 1024 // 2
 screen_height = 1536 // 2
 
 
+
 class Status:
     Main = 0
     Game = 1
@@ -33,6 +34,7 @@ class Bird:
         self.fly_cooling = 0
         self.mass = mass
         self.speed = speed
+        # self.is_actable = speed > 0 이 방법도 있음
         try:
             p = os.path.join("assets", img_path) if img_path else None
             if p and os.path.exists(p):
@@ -67,14 +69,20 @@ class Bird:
         self.yspeed -= 5 * (1 + self.speed / 8)
         self.is_flying = False
     def bird_running(self):
-        print(f"달린다 {self.mass * self.speed}")
+        if self.speed > 0:
+            print(f"달린다 {self.mass * self.speed}")
+        else:
+            print("달릴 수 없다")
     def fly(self):
         print(f"{self.name} : 날고있습니다")
-        if self.fly_cooldown < self.fly_cooling:
-            self.yspeed = 0.5
-            self.flying_time = self.fly_duration
-            self.fly_cooling = 0
-            self.is_flying = True
+        if self.speed > 0:
+            if self.fly_cooldown < self.fly_cooling:
+                self.yspeed = 0.5
+                self.flying_time = self.fly_duration
+                self.fly_cooling = 0
+                self.is_flying = True
+        else:
+            print("날 수 없다")
 
 class PipePair:
     def __init__(self, x: float, gap_y: int, gap_h: int):
